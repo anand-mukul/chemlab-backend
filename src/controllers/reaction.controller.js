@@ -11,37 +11,51 @@ const reactionController = asyncHandler(async (req, res) => {
   }
 
   try {
-    // Fetch all input chemicals from the database
     const chemicalDocs = await Chemical.find({
       name: { $in: chemicals.map((chem) => chem.name) },
     });
 
     if (chemicalDocs.length !== chemicals.length) {
-      return res.json(
-        new ApiResponse(404, {}, "One or more chemicals not found")
-      );
+      return res.status(404).json({
+        success: false,
+        message: "One or more chemicals not found",
+      });
     }
 
-    // Check if a reaction exists for the given chemicals
+    // Match reaction by reactants and quantities
     const reaction = await Reaction.findOne({
-      reactants: { $all: chemicalDocs.map((chem) => chem.name) },
+      reactants: {
+        $all: chemicals.map((chem) => ({
+          $elemMatch: {
+            name: chem.name,
+            requiredQuantity: { $lte: chem.quantity },
+          },
+        })),
+      },
     });
 
     if (reaction) {
-      return res.json(
-        new ApiResponse(200, "Reaction occurred", {
-          newColor: reaction.products[0]?.color || "unknown",
+      return res.json({
+        success: true,
+        message: "Reaction occurred",
+        data: {
           products: reaction.products,
           equation: reaction.equation,
-        })
-      );
-    } else {
-      return res.json(new ApiResponse(200, {}, "No reaction occurred"));
+        },
+      });
     }
+
+    return res.json({
+      success: false,
+      message: "No reaction occurred",
+      data: {},
+    });
   } catch (error) {
     console.error("Error processing reaction:", error);
-    throw new ApiError(500, error?.message || "Error processing reaction");
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 });
 
-export { reactionController }
+export { reactionController };
