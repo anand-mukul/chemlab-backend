@@ -57,6 +57,12 @@ const userSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    workspaces: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Workspace",
+      },
+    ],
   },
   { timestamps: true }
 );

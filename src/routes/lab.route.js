@@ -10,12 +10,12 @@ import {
 
 const router = Router();
 
-router.route("/chemicals").get(verifyJWT, fetchChemicals);
-router.route("/instruments").get(verifyJWT, fetchInstruments);
+router.route("/chemicals").get(fetchChemicals);
+router.route("/instruments").get(fetchInstruments);
 router
   .route("/instruments/:id/add-chemical")
-  .post(verifyJWT, addChemicalToInstrument);
+  .post(addChemicalToInstrument);
 
-router.route("/reaction").post(verifyJWT, simulateReaction);
+router.route("/reaction").post(simulateReaction);
 
 export default router;
