@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:7777/api/v1/users/auth/google/callback",
+      callbackURL: "https://chemlab-backend.onrender.com/api/v1/users/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

@@ -42,7 +42,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `http://${process.env.FRONTEND_URL}/sign-in`,
+    failureRedirect: `https://${process.env.FRONTEND_URL}/sign-in`,
     session: false,
   }),
   (req, res) => {
@@ -51,7 +51,7 @@ router.get(
     res
       .cookie("accessToken", accessToken, COOKIE_OPTIONS)
       .cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
-      .redirect(`http://${process.env.FRONTEND_URL}/`);
+      .redirect(`https://${process.env.FRONTEND_URL}/`);
   }
 );
 
