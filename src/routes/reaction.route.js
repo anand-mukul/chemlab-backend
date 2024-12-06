@@ -4,6 +4,6 @@ import { reactionController } from "../controllers/reaction.controller.js";
 
 const router = Router();
 
-router.route("/reaction").post(reactionController);
+router.route("/reaction").post(verifyJWT, reactionController);
 
 export default router;
