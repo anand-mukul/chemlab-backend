@@ -8,8 +8,8 @@ import {
 
 const router = Router();
 
-router.route("/workspace-name").post(verifyJWT, workspaceName);
-router.route("/workspace/:id").get(verifyJWT, fetchWorkspaceName);
-router.route("/save-workspace").post(verifyJWT, saveWorkspace);
+router.route("/workspace-name").post(workspaceName);
+router.route("/workspace/:id").get(fetchWorkspaceName);
+router.route("/save-workspace").post(saveWorkspace);
 
 export default router;
